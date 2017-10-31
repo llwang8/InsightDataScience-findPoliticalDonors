@@ -19,23 +19,29 @@ Engineer's role on the project is to work on the data pipeline that will hand of
 The following fields are relavant this project:
 
 CMTE_ID: identifies the flier, which  is the recipient of this contribution
+
 ZIP_CODE: zip code of the contributor (only first five digits/characters needed)
+
 TRANSACTION_DT: date of the transaction
+
 TRANSACTION_AMT: amount of the transaction
+
 OTHER_ID: a field that denotes whether contribution came from a person or an entity
 
-Initiate 2 dictionary by_date, by_zip to hold data.  Open file object to read from input/itcont.txt.  Save each line to a batch list until batch size is n.
+Initiate 2 dictionaries by_date, by_zip to hold data.  Open file object to read from input/itcont.txt.  Save each line to a batch list until batch size is n.
 
 With each batch (size n) and the last batch, first split each line by "|" to generate
-an list.  Extract relavant data from the list with right indexes.
+an list.  Extract relevant data from the list with the right indexes.
 
-If any field of other_id, cmte_id, tran_amt is/are empty, ignore this line.  First get the first 5 digits of zipcode as the new zip.  Then append tran_amt to value list of the 2 keys of the right cmte_id and zip.  If keys don't exist, creat keys and add current trans_amt as the first element to this value list.
+If any field of other_id, cmte_id, tran_amt is/are empty, ignore this line.  First get the first 5 digits of zipcode as the new zip value.  Then append tran_amt to value list of the 2 tier keys of cmte_id and zip.  If keys don't exist, creat keys then add current trans_amt as the first element to this value list.
 
-Write to _by_zip file with running up-to-date statistics meadian for each cmte_id, zipcode, count and summary of tran_amt list for the specific cmte_id and zip keys.  Add a new line after writing each line so as current line not to concatenate with the next line.
+Write to _by_zip file with streamed so far statistics meadian for each cmte_id, zipcode, count and summary of tran_amt list for the specific cmte_id and zip keys.  Add a new line after writing each line so as current line not to concatenate with the next line.
 
-Update by_date dict similarly. First validate tran_date first.  Make sure it is not empty, month, day and year all have allowable digits, and last it can be transformed to valid datetime object.  Use cmte_id and valid date as 2-tier dict keys to store relavent tran_amt to its value list.  If keys don't exist, create keys first before adding the first elements.
+Update by_date dict similarly. First validate tran_date first.  Make sure it is not empty. Second, month, day and year all have allowable digits. Last it can be transformed to valid datetime object.
 
-After all batches are processed, sort by_date dict alphabetical by recipient and then chronologically by date.  Then print to _by_date file statistics meadian, count and summary of tran_amt list for the specific cmte_id and date keys.  Add a new line after writing each line so as current line not to concatenate with next line.
+Use cmte_id and valid date as 2-tier dict keys to store relevent tran_amt to its value list.  If keys don't exist, create keys first before adding the first elements.
+
+After all batches are processed, sort by_date dict alphabetical by recipient and then chronologically by date.  Then print to _by_date file statistics meadian, count and summary of list containing all tran_amt for that specific cmte_id and date keys.  Add a new line after writing each line so as current line not to concatenate with next line.
 
 Close file object for writing _by_date file.
 
@@ -58,4 +64,6 @@ Implemented with Python and libraries Time and Statistics.
 
 Original challenge from Insight DataScience
 - [Find Political Donors](https://github.com/InsightDataScience/find-political-donors)
+
+
 
