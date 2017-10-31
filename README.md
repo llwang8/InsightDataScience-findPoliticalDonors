@@ -16,7 +16,7 @@ Engineer's role on the project is to work on the data pipeline that will hand of
 
 ## Approach
 
-The following fields are relavant this project:
+The following fields are relevant to this project:
 
 CMTE_ID: identifies the flier, which  is the recipient of this contribution
 
