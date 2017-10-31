@@ -5,30 +5,48 @@
 
 ## Challenge Summary
 
-
-For this challenge, we're asking you to take an input file that lists campaign contributions by individual donors and distill it into two output files:
+For this challenge, engineer is asked to take an input file that lists campaign contributions by individual donors and distill it into two output files:
 
 medianvals_by_zip.txt: contains a calculated running median, total dollar amount and total number of contributions by recipient and zip code
 
 medianvals_by_date.txt: has the calculated median, total dollar amount and total number of contributions by recipient and date.
 
-As part of the team working on the project, another developer has been placed in charge of building the graphical user interface, which consists of two dashboards. The first would show the zip codes that are particularly generous to a recipient over time while the second would display the days that were lucrative for each recipient.
-
-Your role on the project is to work on the data pipeline that will hand off the information to the front-end. As the backend data engineer, you do not need to display the data or work on the dashboard but you do need to provide the information.
+Engineer's role on the project is to work on the data pipeline that will hand off the information to the front-end. As the backend data engineer, no need to display the data or work on the dashboard but to provide the information.
 
 
 ## Approach
 
-CMTE_ID: identifies the flier, which for our purposes is the recipient of this contribution
-ZIP_CODE: zip code of the contributor (we only want the first five digits/characters)
+The following fields are relavant this project:
+
+CMTE_ID: identifies the flier, which  is the recipient of this contribution
+ZIP_CODE: zip code of the contributor (only first five digits/characters needed)
 TRANSACTION_DT: date of the transaction
 TRANSACTION_AMT: amount of the transaction
 OTHER_ID: a field that denotes whether contribution came from a person or an entity
 
-## Dependencies
+Initiate 2 dictionary by_date, by_zip to hold data.  Open file object to read from input/itcont.txt.  Save each line to a batch list until batch size is n.
+
+With each batch (size n) and the last batch, first split each line by "|" to generate
+an list.  Extract relavant data from the list with right indexes.
+
+If any field of other_id, cmte_id, tran_amt is/are empty, ignore this line.  First get the first 5 digits of zipcode as the new zip.  Then append tran_amt to value list of the 2 keys of the right cmte_id and zip.  If keys don't exist, creat keys and add current trans_amt as the first element to this value list.
+
+Write to _by_zip file with running up-to-date statistics meadian for each cmte_id, zipcode, count and summary of tran_amt list for the specific cmte_id and zip keys.  Add a new line after writing each line so as current line not to concatenate with the next line.
+
+Update by_date dict similarly. First validate tran_date first.  Make sure it is not empty, month, day and year all have allowable digits, and last it can be transformed to valid datetime object.  Use cmte_id and valid date as 2-tier dict keys to store relavent tran_amt to its value list.  If keys don't exist, create keys first before adding the first elements.
+
+After all batches are processed, sort by_date dict alphabetical by recipient and then chronologically by date.  Then print to _by_date file statistics meadian, count and summary of tran_amt list for the specific cmte_id and date keys.  Add a new line after writing each line so as current line not to concatenate with next line.
+
+Close file object for writing _by_date file.
 
 
 ## Run Instruction
+
+The default batch size is set as 50.  Change it if needed before running the program.
+
+At command line at the directory of root type:
+./run.sh
+
 
 
 ### Built with:
@@ -38,5 +56,6 @@ Implemented with Python and libraries Time and Statistics.
 
 ### Resources
 
-Original inspirations from Udacity Course
-- [Intro to Python](https://www.udacity.com/course/introduction-to-python--ud1110)
+Original challenge from Insight DataScience
+- [Find Political Donors](https://github.com/InsightDataScience/find-political-donors)
+

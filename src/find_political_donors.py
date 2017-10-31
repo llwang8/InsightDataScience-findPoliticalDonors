@@ -80,12 +80,13 @@ def process_batch(lineList, by_zip, by_date, f_zip):
 
 def main():
     # open file object to read file from input folder
-    f_read = open('../input/itcont.txt', 'r')
+    f_read = open('./input/itcont.txt', 'r')
     # open file object to append for info by zip
-    f_zip = open('../output/medianvals_by_zip.txt', 'a')
+    f_zip = open('./output/medianvals_by_zip.txt', 'a')
 
     # batch size
-    n = 3
+    # ===========
+    n = 50
     batch = []
     by_zip = {}
     by_date = {}
@@ -106,7 +107,7 @@ def main():
     f_zip.close()
 
     # open file object to write sorted by date info
-    f_date = open('../output/medianvals_by_date.txt', 'w')
+    f_date = open('./output/medianvals_by_date.txt', 'w')
     # sorted() return (key, value) tuple
     sorted_by_id_date = sorted(by_date.items(), key=lambda x: (x[0], x[1].keys()))
     for item in sorted_by_id_date:
